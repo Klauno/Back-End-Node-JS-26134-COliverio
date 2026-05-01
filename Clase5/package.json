@@ -1,0 +1,12 @@
+{
+  "name": "tp-preentrega-node",
+  "version": "1.0.0",
+  "description": "Backend de e-commerce usando FakeStore API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Claudia Oliverio",
+  "license": "ISC"
+}
