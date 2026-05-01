@@ -8,5 +8,6 @@
     "start": "node index.js"
   },
   "author": "Claudia Oliverio",
-  "license": "ISC"
+  "license": "ISC",
+  "keywords": []
 }
