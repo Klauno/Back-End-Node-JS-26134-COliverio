@@ -2,137 +2,182 @@
 
 ---
 
-## 📌 Consigna del Proyecto
+# 📌 Consigna del Proyecto
 
-“Hemos llegado al momento clave. Es hora de demostrar si estás preparado para dar el siguiente paso y unirte a nuestro equipo en TechLab.”
+“Hemos llegado al momento clave. Es hora de demostrar si estás preparado para dar el siguiente paso y unirte a nuestro equipo en TechLab”.
 
-Tu desafío consiste en integrar todo lo aprendido en un único programa. El objetivo es construir una herramienta funcional para manejar productos de una tienda en línea desde la terminal.
+El objetivo del proyecto es construir una herramienta funcional para manejar productos de una tienda online desde la terminal utilizando Node.js y la API FakeStore.
 
 ---
 
-## 🎯 Requerimientos del Proyecto
+# 🎯 Objetivos
 
-### 🔹 Configuración inicial
+- Utilizar Node.js desde la terminal
+- Implementar métodos HTTP
+- Consumir una API externa usando Fetch API
+- Trabajar con process.argv
+- Utilizar ESModules
+- Manejar lógica dinámica y validaciones
 
-- Crear un proyecto en Node.js  
-- Inicializar npm con:
-  npm init -y
-- Configurar "type": "module" en package.json  
-- Crear archivo principal:
-  index.js
-- Agregar script en package.json:
+---
+
+# ⚙️ Configuración Inicial
+
+## Inicializar el proyecto
+
+```bash
+npm init -y
+```
+
+---
+
+## Configurar ESModules
+
+Agregar en package.json:
+
+```json
+"type": "module"
+```
+
+---
+
+## Configurar script start
+
+```json
+"scripts": {
   "start": "node index.js"
+}
+```
 
 ---
 
-## 🚀 Cómo ejecutar la aplicación
+# 🚀 Cómo ejecutar la aplicación
 
-Desde la terminal usar:
+Desde la terminal:
 
+```bash
 npm run start [METHOD] [endpoint] [parámetros]
+```
 
 ---
 
-## 📌 Ejemplos de uso (API FakeStore)
+# 📌 Ejemplos de uso
 
-### 📦 Obtener todos los productos
+## 📦 Obtener todos los productos
+
+```bash
 npm run start GET products
+```
 
 ---
 
-### 🔎 Obtener un producto por ID
-npm run start GET products/5
+## 🔎 Obtener un producto por ID
+
+```bash
+npm run start GET products/15
+```
 
 ---
 
-### ➕ Crear un producto
-npm run start POST products "Remera" 500 ropa
+## ➕ Crear un producto
+
+```bash
+npm run start POST products "T-Shirt-Rex" 300 remeras
+```
 
 Parámetros:
-- title → nombre del producto
-- price → precio (número)
-- category → categoría
+
+- `title` → nombre del producto
+- `price` → precio numérico
+- `category` → categoría
 
 ---
 
-### ❌ Eliminar un producto
-npm run start DELETE products/5
+## ❌ Eliminar un producto
+
+```bash
+npm run start DELETE products/7
+```
 
 ---
 
-### ✏️ Actualizar un producto
-npm run start PUT products/5 "Zapatilla" 2000 calzado
+# 🧠 Lógica del Programa
+
+El programa:
+
+1. Lee argumentos desde la terminal usando `process.argv`
+2. Identifica el método HTTP
+3. Interpreta el endpoint
+4. Consume la API FakeStore usando `fetch`
+5. Muestra la respuesta en consola
 
 ---
 
-## 🧠 Lógica del programa
+# 🛠️ Tecnologías Utilizadas
 
-1. Se leen los argumentos desde la terminal (process.argv)  
-2. Se identifica el método HTTP (GET, POST, PUT, DELETE)  
-3. Se interpreta el endpoint  
-4. Se ejecuta la función correspondiente  
-5. Se consume la API FakeStore  
-6. Se muestra la respuesta en consola  
+- Node.js
+- JavaScript ESModules
+- Fetch API
+- FakeStore API
 
 ---
 
-## ⚙️ Instalación del proyecto
+# 📁 Estructura del Proyecto
 
-git clone https://github.com/TU-USUARIO/TP-PreEntrega-Node.git  
-cd TP-PreEntrega-Node  
-npm install  
-
----
-
-## 🛠️ Tecnologías utilizadas
-
-- Node.js  
-- JavaScript (ESModules)  
-- Fetch API  
-- FakeStore API  
-
----
-
-## 📁 Estructura del proyecto
-
+```txt
 TP-PreEntrega-Node/
-
-├── API/  
-│   └── apiFakeStore.js  
-├── utils/  
-│   └── helpers.js  
-├── index.js  
-├── package.json  
-├── README.md  
-└── .gitignore  
+│
+├── index.js
+├── package.json
+├── README.md
+└── .gitignore
+```
 
 ---
 
-## ⚠️ Manejo de errores
+# ⚠️ Manejo de Errores
 
-- Validación de ID  
-- Validación de parámetros  
-- Manejo de errores HTTP  
-- Control de excepciones  
+El proyecto incluye:
 
----
-
-## 🌐 API utilizada
-
-https://fakestoreapi.com/
+- Validación de IDs
+- Validación de parámetros
+- Manejo de errores HTTP
+- Uso de try/catch
 
 ---
 
-## 📈 Posibles mejoras
+# 🌐 API Utilizada
 
-- Interfaz gráfica  
-- Base de datos real  
-- Autenticación de usuarios  
-- Migración a Express.js  
+FakeStore API:
+
+[FakeStore API](https://fakestoreapi.com/?utm_source=chatgpt.com)
 
 ---
 
-## 👨‍💻 Autor
+# ⚙️ Instalación del Proyecto
 
-Proyecto realizado como práctica de backend con Node.js  
-Claudia Oliverio
+Clonar repositorio:
+
+```bash
+git clone https://github.com/TU-USUARIO/TP-PreEntrega-Node.git
+```
+
+Ingresar a la carpeta:
+
+```bash
+cd TP-PreEntrega-Node
+```
+
+Instalar dependencias:
+
+```bash
+npm install
+```
+
+---
+
+# 👨‍💻 Autor
+
+Proyecto realizado como práctica de backend con Node.js.
+
+Desarrollado por Claudia Oliverio.
