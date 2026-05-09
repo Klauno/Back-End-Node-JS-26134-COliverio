@@ -1,25 +1,25 @@
-import {
-    obtenerProductos,
-    obtenerProductoPorId,
-    agregarProducto,
-    eliminarProducto,
-    actualizarProducto
-} from "./API/apiFakeStore.js";
+const [, , method, endpoint, ...args] = process.argv;
 
-import { esIdValido } from "./utils/helpers.js";
+const urlAPI = "https://fakestoreapi.com/products";
 
-const args = process.argv.slice(2);
-const metodo = args[0]?.toUpperCase();
-const endpoint = args[1];
-const params = args.slice(2);
+function esIdValido(id) {
 
-function validarProducto(title, price, category) {
-    if (!title || !price || !category) {
-        console.log("❌ Faltan datos → uso: title price category");
+    if (!id || isNaN(id) || Number(id) < 1) {
+        console.log("❌ ID inválido");
         return false;
     }
 
-    if (isNaN(price) || price <= 0) {
+    return true;
+}
+
+function validarProducto(title, price, category) {
+
+    if (!title || !price || !category) {
+        console.log("❌ Faltan datos");
+        return false;
+    }
+
+    if (isNaN(price) || Number(price) <= 0) {
         console.log("❌ Precio inválido");
         return false;
     }
@@ -27,18 +27,21 @@ function validarProducto(title, price, category) {
     return true;
 }
 
-function mostrarProducto(p) {
-    console.log("=================================");
-    console.log(`ID: ${p.id}`);
-    console.log(`Nombre: ${p.title}`);
-    console.log(`Precio: $${p.price}`);
-    console.log(`Categoría: ${p.category}`);
-    console.log("=================================");
+function mostrarProducto(producto) {
+
+    console.log("\n=======================");
+    console.log(`ID: ${producto.id}`);
+    console.log(`Producto: ${producto.title}`);
+    console.log(`Precio: $${producto.price}`);
+    console.log(`Categoría: ${producto.category}`);
+    console.log("=======================\n");
+
 }
 
 async function main() {
 
-    if (!metodo || !endpoint) {
+    if (!method || !endpoint) {
+
         console.log("❌ Uso correcto:");
         console.log("npm run start GET products");
         return;
@@ -46,39 +49,38 @@ async function main() {
 
     try {
 
-        switch (metodo) {
+        switch (method.toUpperCase()) {
 
             case "GET":
 
                 if (endpoint === "products") {
-                    const productos = await obtenerProductos();
 
-                    if (!productos?.length) {
-                        console.log("⚠️ No hay productos");
-                        return;
-                    }
+                    const response = await fetch(urlAPI);
+                    const productos = await response.json();
 
                     console.log("\n📦 LISTA DE PRODUCTOS\n");
 
-                    productos.forEach(p => {
-                        console.log(`${p.id} | ${p.title} | $${p.price}`);
+                    productos.forEach(producto => {
+
+                        console.log(
+                            `${producto.id} | ${producto.title} | $${producto.price}`
+                        );
+
                     });
 
-                    console.log("\n✅ Total:", productos.length);
                 }
 
                 else if (endpoint.startsWith("products/")) {
+
                     const id = endpoint.split("/")[1];
+
                     if (!esIdValido(id)) return;
 
-                    const producto = await obtenerProductoPorId(id);
-
-                    if (!producto) {
-                        console.log("❌ Producto no encontrado");
-                        return;
-                    }
+                    const response = await fetch(`${urlAPI}/${id}`);
+                    const producto = await response.json();
 
                     mostrarProducto(producto);
+
                 }
 
                 break;
@@ -87,20 +89,33 @@ async function main() {
 
                 if (endpoint === "products") {
 
-                    const [title, price, category] = params;
+                    const [title, price, category] = args;
 
                     if (!validarProducto(title, price, category)) return;
 
-                    const nuevo = {
+                    const nuevoProducto = {
                         title,
                         price: Number(price),
                         category
                     };
 
-                    const res = await agregarProducto(nuevo);
+                    const response = await fetch(urlAPI, {
 
-                    console.log("\n✅ Producto creado correctamente");
-                    mostrarProducto(res);
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(nuevoProducto)
+
+                    });
+
+                    const data = await response.json();
+
+                    console.log("\n✅ Producto creado");
+
+                    mostrarProducto(data);
                 }
 
                 break;
@@ -110,58 +125,34 @@ async function main() {
                 if (endpoint.startsWith("products/")) {
 
                     const id = endpoint.split("/")[1];
+
                     if (!esIdValido(id)) return;
 
-                    const res = await eliminarProducto(id);
+                    const response = await fetch(`${urlAPI}/${id}`, {
+                        method: "DELETE"
+                    });
 
-                    if (!res) {
-                        console.log("❌ No se pudo eliminar");
-                        return;
-                    }
+                    const data = await response.json();
 
-                    console.log("\n🗑️ Producto eliminado:");
-                    mostrarProducto(res);
-                }
+                    console.log("\n🗑️ Producto eliminado");
 
-                break;
-
-            case "PUT":
-
-                if (endpoint.startsWith("products/")) {
-
-                    const id = endpoint.split("/")[1];
-                    if (!esIdValido(id)) return;
-
-                    const [title, price, category] = params;
-
-                    if (!validarProducto(title, price, category)) return;
-
-                    const actualizado = {
-                        title,
-                        price: Number(price),
-                        category
-                    };
-
-                    const res = await actualizarProducto(id, actualizado);
-
-                    if (!res) {
-                        console.log("❌ No se pudo actualizar");
-                        return;
-                    }
-
-                    console.log("\n✏️ Producto actualizado:");
-                    mostrarProducto(res);
+                    mostrarProducto(data);
                 }
 
                 break;
 
             default:
-                console.log("❌ Método inválido (GET, POST, PUT, DELETE)");
+
+                console.log("❌ Método inválido");
+
         }
 
     } catch (error) {
-        console.error("🔥 Error inesperado:", error.message);
+
+        console.error("🔥 Error:", error.message);
+
     }
+
 }
 
 main();
